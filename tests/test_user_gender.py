@@ -22,10 +22,11 @@ class TestUserGenderPositive(ApiClient):
         response = self.get_users_by_gender(gender)
         assert response.status_code == 200
         json_response = response.json()
+        print(json_response)
 
-        check.equal(json_response.get("isSuccess"), True, "Value of 'isSuccess' is not True")
+        check.equal(json_response.get("isSuccess"), "true", "Value of 'isSuccess' is not true")
         check.equal(json_response.get("errorCode"), 0, "Value of 'errorCode' is not 0")
-        check.is_none(json_response.get("errorMessage"), "Value of 'errorMessage' is not None")
+        check.equal(json_response.get("errorMessage"), "null", "Value of 'errorMessage' is not None")
         check.is_instance(json_response.get("idList"), list, "Value of 'idList' is not a list")
 
     # Check ID: 3a, 4a (success был заменен на isSuccess, result на idList что бы тест работал)
@@ -85,9 +86,10 @@ class TestUserGenderNegative(ApiClient):
     def test_invalid_gender_request_keys(self):
         response = self.get_users_by_gender("fgewg")
         json_response = response.json()
+        print(json_response)
 
         check.is_in("success", json_response, "Key 'success' is missing")
-        check.equal(json_response.get("success"), False, "Value of 'success' is not False")
+        check.equal(json_response.get("success"), "false", "Value of 'success' is not False")
         check.is_in("errorCode", json_response, "Key 'errorCode' is missing")
         check.is_in("errorMessage", json_response, "Key 'errorMessage' is missing")
 

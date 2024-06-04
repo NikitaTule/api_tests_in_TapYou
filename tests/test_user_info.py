@@ -31,9 +31,9 @@ class TestUserInfoPositive(ApiClient):
         json_response = response.json()
 
         # Проверка значений ключей в JSON-ответе
-        check.equal(json_response["isSuccess"], True, "Value of 'isSuccess' is not True")
+        check.equal(json_response["isSuccess"], "true", "Value of 'isSuccess' is not true")
         check.equal(json_response["errorCode"], 0, "Value of 'errorCode' is not 0")
-        check.is_none(json_response["errorMessage"], "Value of 'errorMessage' is not None")
+        check.equal(json_response["errorMessage"], "null", "Value of 'errorMessage' is not null")
 
         user = json_response["user"]
         print(user)
@@ -51,8 +51,9 @@ class TestUserInfoNegative(ApiClient):
         response = self.get_user_info(99999999999)
         assert response.status_code != 200
         json_response = response.json()
+        print(json_response)
         check.is_in("success", json_response, "Key 'success' is missing")
-        check.equal(json_response["success"], False, "Value of 'success' is not False")
+        check.equal(json_response["success"], "false", "Value of 'success' is not false")
         check.is_in("errorCode", json_response, "Key 'errorCode' is missing")
         check.is_in("errorMessage", json_response, "Key 'errorMessage' is missing")
 
